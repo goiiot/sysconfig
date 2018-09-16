@@ -4,9 +4,9 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/impl/log"
 	"gopkg.in/yaml.v2"
 )
 

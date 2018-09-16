@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/service/utils"
 )
 

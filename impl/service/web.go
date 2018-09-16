@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
+	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/rakyll/statik/fs"
 	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
-	"github.com/goiiot/sysconfig/impl/log"
 
 	_ "github.com/goiiot/sysconfig/impl/ui"
 )

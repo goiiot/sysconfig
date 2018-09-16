@@ -1,10 +1,12 @@
 .PHONY: build test ensure
 
+BIN=sysconfig-server
+
 build:
-	go build -o server cmd/server/main.go
+	go build -o ${BIN} cmd/sysconfig/main.go
 
 test: build
-	./server -c ./config.yaml
+	./${BIN} -c ./config.yaml
 
 ensure:
 	go mod verify

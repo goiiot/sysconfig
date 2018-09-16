@@ -8,12 +8,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
+	"github.com/goiiot/sysconfig/impl/log"
+	"github.com/goiiot/sysconfig/impl/service/utils"
 	"github.com/lytics/confl"
 	"github.com/pelletier/go-toml"
 	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
-	"github.com/goiiot/sysconfig/impl/log"
-	"github.com/goiiot/sysconfig/impl/service/utils"
 	"gopkg.in/yaml.v2"
 )
 

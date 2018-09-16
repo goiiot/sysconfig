@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mholt/archiver"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/service/utils"
+	"github.com/mholt/archiver"
 )
 
 // InitServiceFile init file upload/download service

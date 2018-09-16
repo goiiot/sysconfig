@@ -6,10 +6,10 @@ import (
 
 	"github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/goiiot/sysconfig/impl/service/utils"
+	"go.uber.org/zap"
 	JWT "gopkg.in/dgrijalva/jwt-go.v3"
 )
 

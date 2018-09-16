@@ -6,11 +6,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/json"
-	"github.com/gorilla/websocket"
-	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/goiiot/sysconfig/impl/service/utils"
+	"github.com/gorilla/websocket"
+	"go.uber.org/zap"
 )
 
 var (

@@ -2,7 +2,7 @@ package configure
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/model"
 )
 

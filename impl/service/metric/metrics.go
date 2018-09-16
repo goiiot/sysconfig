@@ -45,4 +45,3 @@ func setAllDynamicMetrics(m *Metrics) *Metrics {
 func setAllMetrics(m *Metrics) {
 	setAllDynamicMetrics(setAllStaticMetrics(m))
 }
-

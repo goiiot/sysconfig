@@ -5,16 +5,16 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/spf13/cobra"
-	"go.uber.org/zap"
-	"github.com/goiiot/sysconfig/cmd/server/conf"
+	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/goiiot/sysconfig/impl/service"
+	"github.com/spf13/cobra"
+	"go.uber.org/zap"
 )
 
 var (
-	appName   = "i.MX6 Config Service"
-	appDesc   = "Config i.MX6 with ease"
+	appName = "i.MX6 Config Service"
+	appDesc = "Config i.MX6 with ease"
 )
 
 var (
