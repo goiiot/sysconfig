@@ -1,0 +1,15 @@
+/server*
+/.idea
+/web
+/tmp
+/dist
+/impl/ui
+/vendor
+
+*.tar*
+*.zip
+
+config.imx6.yaml
+config.yaml
+
+go.sum

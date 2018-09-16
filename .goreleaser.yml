@@ -1,0 +1,89 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+
+before:
+  hooks:
+    - ./scripts/x-bundle-ui.sh
+
+builds:
+  # native build (cgo enabled)
+  - binary: config-server
+    main: cmd/server/main.go
+    env:
+      - CGO_ENABLED=1
+      - GIN_MODE=release
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{ .Commit }}
+      - -X main.buildTime={{ .Date }}
+      - -X main.goVersion={{ .Env.GOVERSION }}
+    goos:
+      - "{{ .Env.GOHOSTOS }}"
+    goarch:
+      - "{{ .Env.GOHOSTARCH }}"
+    flags:
+      - -tags release
+  # cross build (cgo disabled)
+  - binary: config-server
+    main: cmd/server/main.go
+    flags:
+      - -tags=release
+    env:
+      - CGO_ENABLED=0
+      - GIN_MODE=release
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{ .Commit }}
+      - -X main.buildTime={{ .Date }}
+      - -X main.goVersion={{ .Env.GOVERSION }}
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    goarm:
+      - 7
+    ignore:
+    # ignore native build
+      - goos: "{{ .Env.GOHOSTOS }}"
+        goarch: "{{ .Env.GOHOSTARCH }}"
+      - goos: darwin
+        goarch: 386
+    hooks:
+      post: ./scripts/x-compress.sh
+
+archive:
+  replacements:
+    386: x86
+    amd64: x86_64
+    arm64: aarch64
+  format_overrides:
+    - goos: windows
+      format: zip
+  wrap_in_directory: true
+  name_template: "{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ .Arm }}"
+  files:
+    - LICENSE.txt
+    - README.md
+    - config.example.yaml
+
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "snapshot"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  draft: true
+  prerelease: true
+  disable: true
