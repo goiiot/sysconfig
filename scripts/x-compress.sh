@@ -13,7 +13,7 @@ if ! [ -x "$(command -v upx)" ]; then
 fi
 
 DIST_DIR="./dist"
-BIN_NAME="config-server"
+BIN_NAME="sysconfig"
 GOOS_LIST=(linux darwin)
 GOARCH_LIST=(amd64 386 arm64 arm_7 arm_6 arm_5)
 BIN_DIR_LIST=()

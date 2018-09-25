@@ -1,6 +1,6 @@
 .PHONY: build test ensure
 
-BIN=sysconfig-server
+BIN=sysconfig-test
 
 build:
 	go build -o ${BIN} cmd/sysconfig/main.go

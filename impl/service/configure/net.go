@@ -27,7 +27,7 @@ const (
 func getWifiInstanceByType(typ string) interface{} {
 	switch typ {
 	case typeWPASupplicant:
-		return new(wifi.WpaSupplicantConfig)
+		return new(wifi.WPASupplicantConf)
 	default:
 		return nil
 	}

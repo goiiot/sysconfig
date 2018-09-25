@@ -3,6 +3,7 @@ module github.com/goiiot/sysconfig
 require (
 	github.com/BurntSushi/toml v0.3.0 // indirect
 	github.com/StackExchange/wmi v0.0.0-20180725035823-b12b22c5341f // indirect
+	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc // indirect
 	github.com/appleboy/gin-jwt v2.5.0+incompatible
 	github.com/appleboy/gofight v2.0.0+incompatible // indirect
 	github.com/araddon/gou v0.0.0-20180803232539-d7d8174cb8b3 // indirect

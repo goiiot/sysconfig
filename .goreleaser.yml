@@ -7,17 +7,14 @@ before:
 
 builds:
   # native build (cgo enabled)
-  - binary: config-server
-    main: cmd/server/main.go
+  - binary: sysconfig
+    main: cmd/sysconfig/main.go
     env:
       - CGO_ENABLED=1
       - GIN_MODE=release
     ldflags:
       - -s -w
-      - -X main.version={{.Version}}
-      - -X main.commit={{ .Commit }}
-      - -X main.buildTime={{ .Date }}
-      - -X main.goVersion={{ .Env.GOVERSION }}
+      - -X main.version={{.Version}} -X main.commit={{ .Commit }} -X main.buildTime={{ .Date }} -X main.goVersion={{ .Env.GOVERSION }}
     goos:
       - "{{ .Env.GOHOSTOS }}"
     goarch:
@@ -25,8 +22,8 @@ builds:
     flags:
       - -tags release
   # cross build (cgo disabled)
-  - binary: config-server
-    main: cmd/server/main.go
+  - binary: sysconfig
+    main: cmd/sysconfig/main.go
     flags:
       - -tags=release
     env:
