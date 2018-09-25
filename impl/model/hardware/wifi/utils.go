@@ -1,5 +1,5 @@
 package wifi
-q
+
 var funcMap = map[string]interface{}{
 	"HasValue": hasValue,
 }
