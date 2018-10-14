@@ -1,33 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+
 import CardHeader from '@material-ui/core/CardHeader/CardHeader';
 import CardActions from '@material-ui/core/CardActions/CardActions';
 import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
-import withRoot from '../../withRoot';
-import {withStyles} from '@material-ui/core';
-import {requestReboot} from '../../api/ApiPower';
-import {getLoraConfig, getLoraStatus, restartLora, startLora, stopLora, updateLoraConfig} from '../../api/ApiConfigure';
-import {showNotificationDialog, showNotificationSnack} from '../../mgmt/MgmtNotification';
 import Typography from '@material-ui/core/Typography/Typography';
 import TextField from '@material-ui/core/TextField/TextField';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 import CardContent from '@material-ui/core/CardContent/CardContent';
-import Collapse from '@material-ui/core/Collapse/Collapse';
 import IconButton from '@material-ui/core/IconButton/IconButton';
-import Divider from '@material-ui/core/Divider/Divider';
 import Switch from '@material-ui/core/Switch/Switch';
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import CachedIcon from '@material-ui/icons/Cached';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+
+import withRoot from '../../withRoot';
+import {withStyles} from '@material-ui/core';
+import {getLoraInfo, getLoraStatus, startLora, stopLora, updateLoraConfig} from '../../api/ApiConfigure';
+import {showNotificationDialog, showNotificationSnack} from '../../mgmt/MgmtNotification';
+
 import {loraDefaultConfig} from '../../template';
 
 const styles = (theme) => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 450,
     overflow: 'auto',
     margin: theme.spacing.unit * 2
   }
@@ -35,88 +31,118 @@ const styles = (theme) => ({
 
 class CardLoraConfig extends React.Component {
   state = {
+    on: false,
     disabled: true,
+
+    gatewayID: "",
+    loraWANPublic: false,
+
     config: loraDefaultConfig,
-
-    isRunning: true,
-    gwid: '00049fFFFE011ba9',
-    isLoRaWanPublic: true
-  };
-
-  handleStart = () => {
-    const {name} = this.props;
-    startLora(name).subscribe(
-      (resp) => showNotificationDialog(`Start ${name} success`, resp),
-      (err) => showNotificationSnack(`Failed to start ${name} ${err}`, 'Retry', this.handleStart)
-    );
-    requestReboot();
-  };
-
-  handleStop = () => {
-    const {name} = this.props;
-    stopLora(name).subscribe(
-      (resp) => showNotificationDialog(`Stop ${name} success`, resp),
-      (err) => showNotificationSnack(`Failed to stop ${name} ${err}`, 'Retry', this.handleStop)
-    );
-  };
-
-  handleRestart = () => {
-    const {name} = this.props;
-    restartLora(name).subscribe(
-      (resp) => showNotificationDialog(`Restart ${name} success`, resp),
-      (err) => showNotificationSnack(`Failed to restart ${name} ${err}`, 'Retry', this.handleRestart)
-    );
+    status: {},
   };
 
   handleStatus = () => {
     const {name} = this.props;
+    this.setState({disabled: true});
+
     getLoraStatus(name).subscribe(
-      (resp) => showNotificationDialog(`Get ${name} Status success`, resp),
-      (err) => showNotificationSnack(`Failed to get status of ${name} ${err}`, 'Retry', this.handleStatus)
+      (status) => this.updateDisplayStatus(status),
+      (err) => showNotificationSnack(`Failed to get status of ${name} ${err}`, 'Retry', this.handleStatus),
+      () => this.setState({disabled: false})
     );
   };
 
-  handleUpdateConfig = () => {
+  getDisplayConfig = () => {
+    const config = this.state.config;
+    config.gateway_conf.gateway_ID = this.state.gatewayID;
+    config.SX1301_conf.lorawan_public = this.state.loraWANPublic;
+    return config;
+  };
+
+  requestUpdateConfig = () => {
     const {name} = this.props;
-    updateLoraConfig(name, this.state.config).subscribe(
-      (resp) => showNotificationDialog(`Update ${name} success`, resp),
-      (err) =>
-        showNotificationSnack(`Failed to update config of ${name} ${err}`, 'Retry', this.handleUpdateConfig)
+    this.setState({disabled: true});
+
+    updateLoraConfig(name, this.getDisplayConfig()).subscribe(
+      r => {
+        // get update result via get device info
+        this.handleDeviceInfo();
+        showNotificationDialog(`Update ${name} config success`);
+      },
+      err =>
+        showNotificationSnack(`Failed to update config of ${name} ${err}`, 'Retry', this.requestUpdateConfig),
+      () => this.setState({disabled: false})
     );
   };
 
-  handleToggleChange = (event) => {
-    const name = event.target.name;
+  handleDeviceToggle = () => {
+    const on = !this.state.on;
+    const {name} = this.props;
+    this.setState({disabled: true});
+
+    if (on) {
+      startLora(name).subscribe(
+        (resp) => {
+          this.handleStatus();
+          showNotificationDialog(`Start ${name} success`, resp);
+        },
+        (err) => showNotificationSnack(`Failed to start ${name} ${err}`, 'Retry', this.handleStart),
+        () => this.setState({disabled: false})
+      );
+    } else {
+      stopLora(name).subscribe(
+        (resp) => {
+          this.handleStatus();
+          showNotificationDialog(`Stop ${name} success`, resp);
+        },
+        (err) => showNotificationSnack(`Failed to stop ${name} ${err}`, 'Retry', this.handleStop),
+        () => this.setState({disabled: false})
+      );
+    }
+  };
+
+  updateDisplayConfig = (config) => {
+    this.setState({
+      config: config,
+      gatewayID: config.gateway_conf.gateway_ID,
+      loraWANPublic: config.SX1301_conf.lorawan_public,
+    });
+  };
+
+  updateDisplayStatus = (status) => {
+    this.setState({on: status.on, status: status});
+  };
+
+  handleDeviceInfo = () => {
+    const {name} = this.props;
+    this.setState({disabled: true});
+
+    getLoraInfo(name).subscribe(
+      (info) => {
+        this.updateDisplayStatus(info.status);
+        this.updateDisplayConfig(info.config);
+        this.setState({disabled: false});
+      },
+      (err) => {
+        this.setState({disabled: true});
+        showNotificationSnack(`Failed to get config of ${name} ${err}`);
+      }
+    );
+  };
+
+  handleValueChange = (name) => (event) => {
+    const value = event.target.value;
+    this.setState({[name]: value});
+  };
+
+  handleToggleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.checked
     });
   };
 
-  handleResetChip = () => {
-    if (this.state.isRunning) {
-      // alert('please stop');
-      // return;
-    }
-    // alert('reset ok');
-  };
-
-  handleUpdateGWID = () => {
-    this.setState({gwid: 'aaaa'});
-  };
-
-  handleExpandClick = () => {
-    this.setState((state) => ({expanded: !state.expanded}));
-  };
-
   componentDidMount() {
-    const {name} = this.props;
-    getLoraConfig(name).subscribe(
-      (c) => {
-        console.log(c);
-        this.setState({disabled: false, config: c});
-      },
-      (err) => showNotificationSnack(`Failed to get config of ${name} ${err}`)
-    );
+    this.handleDeviceInfo();
   }
 
   render() {
@@ -127,89 +153,53 @@ class CardLoraConfig extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           title={name}
-          action={
-            <Switch checked={this.state.isRunning} onChange={this.handleToggleChange} name="isRunning"/>
-          }
-          subheader={'forward packet to mqtt broker'}
+          action={[
+            <IconButton key={`card-lora-pkt-fwd-${name}-refresh`} color="default"
+                        aria-label="Refresh" onClick={this.handleDeviceInfo}>
+              <RefreshIcon/>
+            </IconButton>,
+            <Switch key={`card-lora-pkt-fwd-${name}-switch`} checked={this.state.on}
+                    disabled={this.state.disabled} onClick={this.handleDeviceToggle}/>
+          ]}
+          subheader='MQTT Packet Forwarder'
         />
         <CardContent>
-          <Typography variant="body2">
-            SX1301
-            <Button color="primary" onClick={this.handleResetChip}>
-              RESET
-              <RefreshIcon/>
-            </Button>
+          <FormControlLabel control={<Switch checked={this.state.loraWANPublic}
+                                             onChange={this.handleToggleChange("loraWANPublic")}/>}
+                            label="LoRaWAN Public"/>
+          <TextField label="Gateway Id" value={this.state.gatewayID}
+                     onChange={this.handleValueChange("gatewayID")}/>
+          <br/>
+          <br/>
+          <Typography variant="title">Radio Information</Typography>
+          <br/>
+          <Typography variant="body1" color="textPrimary">
+            Radio 0 ({config.SX1301_conf.radio_0.tx_enable ? 'Enabled' : 'Disabled'})
           </Typography>
-          <Typography variant="body2">
-            Update ID
-            <IconButton aria-label="gwid_update" onClick={this.handleUpdateGWID}>
-              <CachedIcon color="primary"/>
-            </IconButton>
+          <Typography variant="body2" color="textPrimary">
+            Type: {config.SX1301_conf.radio_0.type} ({config.SX1301_conf.radio_0.enable ? 'Enabled' : 'Disabled'})
+          </Typography>
+          <Typography variant="body2" color="textPrimary">
+            TX Frequency
+            Range: {config.SX1301_conf.radio_0.tx_freq_min / 1000000} - {config.SX1301_conf.radio_0.tx_freq_max / 1000000} MHz
+          </Typography>
+          <Typography variant="body2" color="textPrimary">
+            Frequency: {config.SX1301_conf.radio_0.freq / 1000000} MHz
           </Typography>
           <br/>
-          <TextField label="Gateway Id" value={this.state.gwid} InputProps={{readOnly: true}}/>
-          <Divider/>
-          <Typography variant="title">Radio Information</Typography>
           <Typography variant="body1" color="textPrimary">
-            Radio 0 ({config.SX1301_conf.radio_0.freq / 1000000} MHz)
+            Radio 1 ({config.SX1301_conf.radio_1.enable ? 'Enabled' : 'Disabled'})
           </Typography>
           <Typography variant="body2" color="textPrimary">
-            Type: {config.SX1301_conf.radio_0.type}, EN:{config.SX1301_conf.radio_0.enable ? '√' : '×'}
+            Type: {config.SX1301_conf.radio_1.type}
           </Typography>
           <Typography variant="body2" color="textPrimary">
-            TX: {config.SX1301_conf.radio_0.tx_enable ? '√' : '×'}
-            {config.SX1301_conf.radio_0.tx_enable && (
-              <React.Fragment>
-                {' |'}Range:{config.SX1301_conf.radio_0.tx_freq_min / 1000000} - {' '}
-                {config.SX1301_conf.radio_0.tx_freq_max / 1000000} MHz
-              </React.Fragment>
-            )}
+            Frequency: {config.SX1301_conf.radio_1.freq / 1000000} MHz
           </Typography>
-          <Divider/>
-          <Typography variant="body1" color="textPrimary">
-            Radio 1 ({config.SX1301_conf.radio_1.freq / 1000000} MHz)
-          </Typography>
-          <Typography variant="body2" color="textPrimary">
-            Type: {config.SX1301_conf.radio_1.type}, EN:{config.SX1301_conf.radio_1.enable ? '√' : '×'}
-          </Typography>
-          <Typography variant="body2" color="textPrimary">
-            TX: {config.SX1301_conf.radio_1.tx_enable ? '√' : '×'}
-            {config.SX1301_conf.radio_1.tx_enable && (
-              <React.Fragment>
-                {' |'}Range: {config.SX1301_conf.radio_1.tx_freq_min / 1000000} - {' '}
-                {config.SX1301_conf.radio_1.tx_freq_max / 1000000} MHz
-              </React.Fragment>
-            )}
-          </Typography>
-          <Divider/>
-          <IconButton
-            classes={classnames(classes.expand, {[classes.expandOpen]: this.state.expanded})}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon/>
-          </IconButton>
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-            <Typography variant="body2">
-              LoRaWAN Public
-              <Checkbox
-                color="secondary"
-                checked={this.state.isLoRaWanPublic}
-                onChange={this.handleToggleChange}
-              />
-            </Typography>
-          </Collapse>
         </CardContent>
         <CardActions>
-          <Button
-            variant="raised"
-            component="span"
-            color="primary"
-            disabled={disabled}
-            className={classes.button}
-            onClick={this.handleUpdateConfig}
-          >
+          <Button variant="raised" component="span" color="primary" className={classes.button}
+                  disabled={disabled} onClick={this.requestUpdateConfig}>
             Save
           </Button>
         </CardActions>

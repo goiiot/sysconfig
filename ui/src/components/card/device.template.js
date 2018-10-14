@@ -7,22 +7,15 @@ import Button from "@material-ui/core/Button/Button";
 import Switch from "@material-ui/core/Switch/Switch";
 import withRoot from "../../withRoot";
 import {withStyles} from "@material-ui/core";
-import {
-  getPeriphInfo,
-  getPeriphStatus,
-  restartPeriph,
-  startPeriph,
-  stopPeriph,
-  updatePeriphConfig
-} from "../../api/ApiConfigure";
+import {getPeriphInfo, getPeriphStatus, startPeriph, stopPeriph, updatePeriphConfig} from "../../api/ApiConfigure";
 import {showNotificationDialog, showNotificationSnack} from "../../mgmt/MgmtNotification";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 const styles = theme => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 350,
     overflow: "auto",
     margin: theme.spacing.unit * 2,
   },
@@ -35,18 +28,6 @@ class CardPeriphConfig extends React.Component {
 
     config: {}, // TODO split config to multi parts
     status: {}, // TODO split status to multi parts
-  };
-
-  handleRestart = () => {
-    const {name} = this.props;
-    this.setState({disabled: true});
-
-    restartPeriph(name).subscribe(
-      resp => {
-        this.handleStatus();
-        showNotificationDialog(`Restart ${name} success`, resp);
-      },
-      err => showNotificationSnack(`Failed to restart ${name} ${err}`, "Retry", this.handleRestart));
   };
 
   handleStatus = () => {

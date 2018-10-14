@@ -1,18 +1,19 @@
 package configure
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
 	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
 	"github.com/goiiot/sysconfig/impl/log"
 	"github.com/goiiot/sysconfig/impl/service/utils"
 	"github.com/lytics/confl"
-	"github.com/pelletier/go-toml"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
 )
@@ -204,7 +205,8 @@ func handleCommonUpdateConfig(
 
 		toStore, err := converter(dev.Type, dev.ConfigFmt, data)
 		if err != nil {
-			utils.RespErrJSON(ctx, http.StatusInternalServerError, 1, "")
+			log.E("error happened when converting posted data: %v", zap.Error(err))
+			utils.RespErrJSON(ctx, http.StatusInternalServerError, 1, fmt.Sprintf("error happened when converting posted data"))
 			return
 		}
 
@@ -266,7 +268,14 @@ func marshal(fmt string, in interface{}) ([]byte, error) {
 	case "json":
 		f = json.Marshal
 	case "toml":
-		f = toml.Marshal
+		f = func(i interface{}) ([]byte, error) {
+			buf := &bytes.Buffer{}
+			err := toml.NewEncoder(buf).Encode(i)
+			if err != nil {
+				return nil, err
+			}
+			return buf.Bytes(), nil
+		}
 	case "yaml":
 		f = yaml.Marshal
 	case "ucl":

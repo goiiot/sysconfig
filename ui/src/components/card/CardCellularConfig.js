@@ -10,7 +10,6 @@ import {withStyles} from "@material-ui/core";
 import {
   getCellularInfo,
   getCellularStatus,
-  restartCellular,
   startCellular,
   stopCellular,
   updateCellularConfig
@@ -21,8 +20,8 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 
 const styles = theme => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 350,
     overflow: "auto",
     margin: theme.spacing.unit * 2,
   },
@@ -35,18 +34,6 @@ class CardCellularConfig extends React.Component {
 
     config: {}, // TODO split config to multi parts
     status: {}, // TODO split status to multi parts
-  };
-
-  handleRestart = () => {
-    const {name} = this.props;
-    this.setState({disabled: true});
-
-    restartCellular(name).subscribe(
-      resp => {
-        this.handleStatus();
-        showNotificationDialog(`Restart ${name} success`, resp);
-      },
-      err => showNotificationSnack(`Failed to restart ${name} ${err}`, "Retry", this.handleRestart));
   };
 
   handleStatus = () => {

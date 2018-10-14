@@ -7,13 +7,13 @@ import Button from "@material-ui/core/Button/Button";
 import Switch from "@material-ui/core/Switch/Switch";
 import withRoot from "../../withRoot";
 import {withStyles} from "@material-ui/core";
-import {getBusInfo, getBusStatus, restartBus, startBus, stopBus, updateBusConfig} from "../../api/ApiConfigure";
+import {getBusInfo, getBusStatus, startBus, stopBus, updateBusConfig} from "../../api/ApiConfigure";
 import {showNotificationDialog, showNotificationSnack} from "../../mgmt/MgmtNotification";
 
 const styles = theme => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 350,
     overflow: "auto",
     margin: theme.spacing.unit * 2,
   },
@@ -26,12 +26,7 @@ class CardDevice extends React.Component {
 
     config: {},
   };
-  handleRestart = () => {
-    const {name} = this.props;
-    restartBus(name).subscribe(
-      resp => showNotificationDialog(`Restart ${name} success`, resp),
-      err => showNotificationSnack(`Failed to restart ${name} ${err}`, "Retry", this.handleRestart));
-  };
+
   handleStatus = () => {
     const {name} = this.props;
     getBusStatus(name).subscribe(

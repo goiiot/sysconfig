@@ -24,7 +24,8 @@ func getInstanceFromType(typ string) interface{} {
 	case typePacketForwarder:
 		return new(lora.PktFwdConfig)
 	case typeBrocaarLoraGatewayBridge:
-		return new(lora.BrocaarGWBRConfig)
+		m := make(map[string]interface{})
+		return &m
 	default:
 		return nil
 	}

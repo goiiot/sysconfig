@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button/Button";
 import Switch from "@material-ui/core/Switch/Switch";
 import withRoot from "../../withRoot";
 import {withStyles} from "@material-ui/core";
-import {getWifiInfo, getWifiStatus, restartWifi, startWifi, stopWifi, updateWifiConfig} from "../../api/ApiConfigure";
+import {getWifiInfo, getWifiStatus, startWifi, stopWifi, updateWifiConfig} from "../../api/ApiConfigure";
 import {showNotificationDialog, showNotificationSnack} from "../../mgmt/MgmtNotification";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -30,18 +30,6 @@ class CardWifiConfig extends React.Component {
 
     config: {}, // TODO split config to multi parts
     status: {}, // TODO split status to multi parts
-  };
-
-  handleRestart = () => {
-    const {name} = this.props;
-    this.setState({disabled: true});
-
-    restartWifi(name).subscribe(
-      resp => {
-        this.handleStatus();
-        showNotificationDialog(`Restart ${name} success`, resp);
-      },
-      err => showNotificationSnack(`Failed to restart ${name} ${err}`, "Retry", this.handleRestart));
   };
 
   handleStatus = () => {
@@ -118,6 +106,7 @@ class CardWifiConfig extends React.Component {
       showNotificationSnack(`Failed to get config of ${name} ${err}`);
     });
   };
+
   handleInputChange = (event) => {
     const name = event.target.name;
     this.setState({

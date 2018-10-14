@@ -208,7 +208,7 @@ export const loraDefaultConfig = {
   }
 };
 
-export const loraBridgeDefaultConfig ={
+export const loraBridgeDefaultConfig = {
   "general": {
     "log_level": 0
   },
@@ -226,15 +226,15 @@ export const loraBridgeDefaultConfig ={
       "config_topic_template": "",
       "marshaler": "protobuf",
       "auth": {
-        "type": "{{ .Backend.MQTT.Auth.Type }}",
+        "type": "",
         "generic": {
-          "server": "tcp://",
-          "username": "test_username",
-          "password": "test_password",
+          "server": "",
+          "username": "",
+          "password": "",
           "ca_cert": "",
           "tls_cert": "",
           "tls_key": "",
-          "qos": 0,
+          "mqttQoS": 0,
           "clean_session": false,
           "client_id": "",
           "max_reconnect_interval": 0
@@ -246,7 +246,7 @@ export const loraBridgeDefaultConfig ={
       "ca_cert": "",
       "tls_cert": "",
       "tls_key": "",
-      "qos": 0,
+      "mqttQoS": 0,
       "clean_session": false,
       "client_id": "",
       "max_reconnect_interval": 0,
@@ -256,7 +256,7 @@ export const loraBridgeDefaultConfig ={
   "metrics": {
     "prometheus": {
       "endpoint_enabled": false,
-      "bind": "0.0.0.0:9090"
+      "bind": ""
     }
   }
 };

@@ -45,6 +45,8 @@ class PageLora extends React.Component {
             return (
               <CardLoraBridgeConfig key={`lora-item-${v.name}`} name={v.name}/>
             )
+          } else {
+            return <div/>;
           }
         })}
       </div>

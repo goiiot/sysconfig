@@ -6,12 +6,10 @@ import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
 import withRoot from '../../withRoot';
 import {withStyles} from '@material-ui/core';
-import {requestReboot} from '../../api/ApiPower';
 import {
   getInterfaceConfig,
   getInterfaceStatus,
   restartInterface,
-  startInterface,
   stopInterface,
   updateInterfaceConfig
 } from '../../api/ApiConfigure';
@@ -23,8 +21,8 @@ import Switch from '@material-ui/core/Switch/Switch';
 
 const styles = (theme) => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 350,
     overflow: 'auto',
     margin: theme.spacing.unit * 2
   }
@@ -44,15 +42,6 @@ class CardInterfaceConfig extends React.Component {
     ip: '192.168.1.1',
     netmask: '255.255.255.0',
     gateway: '192.168.1.1'
-  };
-
-  handleStart = () => {
-    const {name} = this.props;
-    startInterface(name).subscribe(
-      (resp) => showNotificationDialog(`Start ${name} success`, resp),
-      (err) => showNotificationSnack(`Failed to start ${name} ${err}`, 'Retry', this.handleStart)
-    );
-    requestReboot();
   };
 
   handleStop = () => {

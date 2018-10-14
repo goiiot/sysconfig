@@ -1,13 +1,11 @@
 module github.com/goiiot/sysconfig
 
 require (
-	github.com/BurntSushi/toml v0.3.0 // indirect
+	github.com/BurntSushi/toml v0.3.1
 	github.com/StackExchange/wmi v0.0.0-20180725035823-b12b22c5341f // indirect
-	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc // indirect
 	github.com/appleboy/gin-jwt v2.5.0+incompatible
 	github.com/appleboy/gofight v2.0.0+incompatible // indirect
 	github.com/araddon/gou v0.0.0-20180803232539-d7d8174cb8b3 // indirect
-	github.com/brocaar/lorawan v0.0.0-20180719091918-f8d816eb916d
 	github.com/buger/jsonparser v0.0.0-20180910192245-6acdf747ae99 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/dsnet/compress v0.0.0-20171208185109-cc9eb1d7ad76 // indirect
@@ -19,7 +17,6 @@ require (
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/jacobsa/crypto v0.0.0-20180924003735-d95898ceee07 // indirect
 	github.com/json-iterator/go v1.1.5 // indirect
 	github.com/kr/pty v1.1.3
 	github.com/labstack/echo v3.2.1+incompatible // indirect
@@ -31,7 +28,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/nwaples/rardecode v0.0.0-20171029023500-e06696f847ae // indirect
-	github.com/pelletier/go-toml v1.2.0
 	github.com/pierrec/lz4 v2.0.5+incompatible // indirect
 	github.com/pkg/errors v0.8.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

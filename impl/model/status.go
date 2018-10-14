@@ -5,6 +5,7 @@ type Status struct {
 }
 
 type LoraStatus struct {
+	Status
 }
 
 type WifiStatus struct {

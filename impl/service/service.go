@@ -6,7 +6,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	"github.com/goiiot/sysconfig/cmd/sysconfig/conf"
+
 	"github.com/goiiot/sysconfig/impl/service/auth"
 	"github.com/goiiot/sysconfig/impl/service/configure"
 	"github.com/goiiot/sysconfig/impl/service/file"

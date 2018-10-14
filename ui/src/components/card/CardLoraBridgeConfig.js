@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button/Button';
 import Switch from '@material-ui/core/Switch/Switch';
 import withRoot from '../../withRoot';
 import {CardContent, withStyles} from '@material-ui/core';
-import {getLoraInfo, getLoraStatus, restartLora, startLora, stopLora, updateLoraConfig} from '../../api/ApiConfigure';
+import {getLoraInfo, getLoraStatus, startLora, stopLora, updateLoraConfig} from '../../api/ApiConfigure';
 import {showNotificationDialog, showNotificationSnack} from '../../mgmt/MgmtNotification';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -16,8 +16,8 @@ import {loraBridgeDefaultConfig} from '../../template';
 
 const styles = (theme) => ({
   card: {
-    height: 'auto',
-    width: 400,
+    width: 300,
+    height: 380,
     overflow: 'auto',
     margin: theme.spacing.unit * 2
   }
@@ -28,27 +28,13 @@ class CardLoraBridgeConfig extends React.Component {
     on: false,
     disabled: true,
 
-    inputError: false,
-
-    mqServer: '',
-    mqPort: 0,
-    qos: 0,
+    mqttServer: "",
+    mqttQoS: 0,
+    mqttUsername: "",
+    mqttPassword: "",
 
     config: loraBridgeDefaultConfig,
     status: {},
-  };
-
-  handleRestart = () => {
-    const {name} = this.props;
-    this.setState({disabled: true});
-
-    restartLora(name).subscribe(
-      (resp) => {
-        this.handleStatus();
-        showNotificationDialog(`Restart ${name} success`, resp);
-      },
-      (err) => showNotificationSnack(`Failed to restart ${name} ${err}`, 'Retry', this.handleRestart)
-    );
   };
 
   handleStatus = () => {
@@ -62,8 +48,12 @@ class CardLoraBridgeConfig extends React.Component {
     );
   };
 
-  getDisplayConfig = (cfg) => {
-    // TODO make displayed config wholesome
+  getDisplayConfig = () => {
+    const generic = this.state.config.backend.mqtt.auth.generic;
+    generic.server = this.state.mqttServer;
+    generic.qos = parseInt(this.state.mqttQoS, 10);
+    generic.username = this.state.mqttUsername;
+    generic.password = this.state.mqttPassword;
     return this.state.config;
   };
 
@@ -72,12 +62,12 @@ class CardLoraBridgeConfig extends React.Component {
     this.setState({disabled: true});
 
     updateLoraConfig(name, this.getDisplayConfig()).subscribe(
-      (r) => {
+      r => {
         // get update result via get device info
         this.handleDeviceInfo();
         showNotificationDialog(`Update ${name} config success`);
       },
-      (err) =>
+      err =>
         showNotificationSnack(`Failed to update config of ${name} ${err}`, 'Retry', this.requestUpdateConfig),
       () => this.setState({disabled: false})
     );
@@ -110,7 +100,13 @@ class CardLoraBridgeConfig extends React.Component {
   };
 
   updateDisplayConfig = (config) => {
-    this.setState({config: config});
+    this.setState({
+      config: config,
+      mqttServer: config.backend.mqtt.auth.generic.server,
+      mqttQoS: config.backend.mqtt.auth.generic.qos,
+      mqttUsername: config.backend.mqtt.auth.generic.username,
+      mqttPassword: config.backend.mqtt.auth.generic.password,
+    });
   };
 
   updateDisplayStatus = (status) => {
@@ -137,19 +133,13 @@ class CardLoraBridgeConfig extends React.Component {
   handleQoSChange = (event) => {
     const value = event.target.value;
     this.setState({
-      qos: value < 0 ? 0 : value > 2 ? 2 : value
+      mqttQoS: value < 0 ? 0 : value > 2 ? 2 : value
     });
   };
 
-  handleInputChange = (name) => (event) => {
+  handleValueChange = (name) => (event) => {
     const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
-    if (name === 'mqServer') {
-      const testRegExp = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-      testRegExp.test(value) ? this.setState({inputError: false}) : this.setState({inputError: true});
-    }
+    this.setState({[name]: value});
   };
 
   componentDidMount() {
@@ -158,53 +148,41 @@ class CardLoraBridgeConfig extends React.Component {
 
   render() {
     const {classes, name} = this.props;
-    const {disabled, config} = this.state;
+    const {disabled} = this.state;
 
     return (
       <Card className={classes.card}>
         <CardHeader
           title={name}
           action={[
-            <IconButton
-              key={`card-periph-${name}-refresh`}
-              color="default"
-              aria-label="Refresh"
-              onClick={this.handleDeviceInfo}
-            >
+            <IconButton key={`card-lora-bridge-${name}-refresh`} color="default"
+                        aria-label="Refresh" onClick={this.handleDeviceInfo}>
               <RefreshIcon/>
             </IconButton>,
-            <Switch
-              key={`card-periph-${name}-switch`}
-              checked={this.state.on}
-              disabled={this.state.disabled}
-              onClick={this.handleDeviceToggle}
-            />
+            <Switch key={`card-lora-bridge-${name}-switch`} checked={this.state.on}
+                    disabled={this.state.disabled} onClick={this.handleDeviceToggle}/>
           ]}
+          subheader="MQTT Gateway Forwarder"
         />
         <CardContent>
-          <TextField
-            error={this.state.inputError}
-            required
-            label="mqtt server"
-            value={this.state.mqServer}
-            onChange={this.handleInputChange('mqServer')}
-          />
+          <TextField required label="MQTT Server" value={this.state.mqttServer}
+                     disabled={disabled} onChange={this.handleValueChange('mqttServer')}/>
           <br/>
-          <TextField required type="number" label="port" value={this.state.mqPort}
-                     onChange={this.handleInputChange('mqPort')}/>
           <br/>
-          <TextField required type="number" label="QoS" value={this.state.qos}
-                     onChange={this.handleQoSChange}/>
+          <TextField required type="number" label="MQTT QoS" value={this.state.mqttQoS}
+                     disabled={disabled} onChange={this.handleQoSChange}/>
+          <br/>
+          <br/>
+          <TextField label="MQTT Username" value={this.state.mqttUsername}
+                     disabled={disabled} onChange={this.handleValueChange('mqttUsername')}/>
+          <br/>
+          <br/>
+          <TextField label="MQTT Password" value={this.state.mqttPassword}
+                     disabled={disabled} onChange={this.handleValueChange('mqttPassword')}/>
         </CardContent>
         <CardActions>
-          <Button
-            variant="raised"
-            component="span"
-            color="primary"
-            disabled={disabled}
-            className={classes.button}
-            onClick={this.requestUpdateConfig}
-          >
+          <Button variant="raised" component="span" color="primary" className={classes.button}
+                  disabled={disabled} onClick={this.requestUpdateConfig}>
             Save
           </Button>
         </CardActions>
