@@ -7,6 +7,7 @@ require (
 	github.com/appleboy/gin-jwt v2.5.0+incompatible
 	github.com/appleboy/gofight v2.0.0+incompatible // indirect
 	github.com/araddon/gou v0.0.0-20180803232539-d7d8174cb8b3 // indirect
+	github.com/brocaar/lorawan v0.0.0-20180719091918-f8d816eb916d
 	github.com/buger/jsonparser v0.0.0-20180910192245-6acdf747ae99 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/dsnet/compress v0.0.0-20171208185109-cc9eb1d7ad76 // indirect
@@ -18,6 +19,7 @@ require (
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/jacobsa/crypto v0.0.0-20180924003735-d95898ceee07 // indirect
 	github.com/json-iterator/go v1.1.5 // indirect
 	github.com/kr/pty v1.1.3
 	github.com/labstack/echo v3.2.1+incompatible // indirect

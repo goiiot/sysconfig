@@ -207,3 +207,56 @@ export const loraDefaultConfig = {
     "forward_crc_disabled": false
   }
 };
+
+export const loraBridgeDefaultConfig ={
+  "general": {
+    "log_level": 0
+  },
+  "packet_forwarder": {
+    "udp_bind": "",
+    "skip_crc_check": false,
+    "configuration": null
+  },
+  "backend": {
+    "mqtt": {
+      "uplink_topic_template": "",
+      "downlink_topic_template": "",
+      "stats_topic_template": "",
+      "ack_topic_template": "",
+      "config_topic_template": "",
+      "marshaler": "protobuf",
+      "auth": {
+        "type": "{{ .Backend.MQTT.Auth.Type }}",
+        "generic": {
+          "server": "tcp://",
+          "username": "test_username",
+          "password": "test_password",
+          "ca_cert": "",
+          "tls_cert": "",
+          "tls_key": "",
+          "qos": 0,
+          "clean_session": false,
+          "client_id": "",
+          "max_reconnect_interval": 0
+        }
+      },
+      "server": "",
+      "username": "",
+      "password": "",
+      "ca_cert": "",
+      "tls_cert": "",
+      "tls_key": "",
+      "qos": 0,
+      "clean_session": false,
+      "client_id": "",
+      "max_reconnect_interval": 0,
+      "always_subscribe_ma_cs": null
+    }
+  },
+  "metrics": {
+    "prometheus": {
+      "endpoint_enabled": false,
+      "bind": "0.0.0.0:9090"
+    }
+  }
+};

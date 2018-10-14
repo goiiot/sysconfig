@@ -6,6 +6,7 @@ import withRoot from '../withRoot';
 import {getLoraList} from "../api/ApiConfigure";
 import {showNotificationSnack} from "../mgmt/MgmtNotification";
 import CardLoraConfig from "../components/card/CardLoraConfig";
+import CardLoraBridgeConfig from "../components/card/CardLoraBridgeConfig";
 
 const styles = {
   root: {
@@ -36,14 +37,20 @@ class PageLora extends React.Component {
     return (
       <div className={classes.root}>
         {devices.map((v) => {
-          return (
-            <CardLoraConfig key={`lora-item-${v.name}`} name={v.name}/>
-          );
+          if (v.type === 'pkt_forwarder') {
+            return (
+              <CardLoraConfig key={`lora-item-${v.name}`} name={v.name}/>
+            );
+          } else if (v.type === 'brocaar/lora-gateway-bridge') {
+            return (
+              <CardLoraBridgeConfig key={`lora-item-${v.name}`} name={v.name}/>
+            )
+          }
         })}
       </div>
     );
   }
-};
+}
 
 PageLora.propTypes = {
   classes: PropTypes.object.isRequired,

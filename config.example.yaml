@@ -113,7 +113,7 @@ service:
         # enable wifi configure service or not
         enabled: true
         devs:
-        - name: wifi_0
+        - name: WLAN_0
           enabled: true
           # path to wpa_supplicant.conf
           conf_file: /etc/wpa_supplicant.conf
@@ -126,7 +126,7 @@ service:
         # enable cellular configure service or not
         enabled: true
         devs:
-        - name: cellular_0
+        - name: CELL_0
           enabled: true
           # config file format [text, json, ucl, toml, yaml]
           conf_fmt: text
@@ -154,7 +154,7 @@ service:
       # enable bus configure service or not
       enabled: true
       devs:
-      - name: gpio_0
+      - name: GPIO_0
         enabled: true
         # path to custom gpio config file
         conf_file: /path/to/gpio/config
