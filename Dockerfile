@@ -3,7 +3,7 @@ FROM golang:alpine
 # build app
 COPY . /build
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
 ENV GOPATH=/gopath
 ENV CGO_ENABLED=0
@@ -11,9 +11,9 @@ ENV CGO_ENABLED=0
 RUN \
     apk add --no-cache --virtual .build_deps \
      upx git nodejs make musl-dev \
-    && mkdir -p ${GOPATH}
-
-RUN go get github.com/rakyll/statik \
+    && mkdir -p ${GOPATH} \
+    \
+    && go get github.com/rakyll/statik \
     \
     && go get -d github.com/goreleaser/goreleaser \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
