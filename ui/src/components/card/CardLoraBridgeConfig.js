@@ -49,7 +49,7 @@ class CardLoraBridgeConfig extends React.Component {
   };
 
   getDisplayConfig = () => {
-    const generic = this.state.config.backend.mqtt.auth.generic;
+    const generic = this.state.config.backend.mqtt;
     generic.server = this.state.mqttServer;
     generic.qos = parseInt(this.state.mqttQoS, 10);
     generic.username = this.state.mqttUsername;
@@ -102,10 +102,10 @@ class CardLoraBridgeConfig extends React.Component {
   updateDisplayConfig = (config) => {
     this.setState({
       config: config,
-      mqttServer: config.backend.mqtt.auth.generic.server,
-      mqttQoS: config.backend.mqtt.auth.generic.qos,
-      mqttUsername: config.backend.mqtt.auth.generic.username,
-      mqttPassword: config.backend.mqtt.auth.generic.password,
+      mqttServer: config.backend.mqtt.server,
+      mqttQoS: config.backend.mqtt.qos,
+      mqttUsername: config.backend.mqtt.username,
+      mqttPassword: config.backend.mqtt.password,
     });
   };
 

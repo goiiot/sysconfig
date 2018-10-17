@@ -1,0 +1,4 @@
+/dist/*.tar.gz
+
+/dist/*arm*
+/dist/*darwin*

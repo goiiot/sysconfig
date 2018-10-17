@@ -28,7 +28,7 @@ class PageLora extends React.Component {
   componentDidMount() {
     getLoraList().subscribe(
       list => this.setState({devices: [...list]}),
-      err => showNotificationSnack(`Failed to get periph list ${err}`));
+      err => showNotificationSnack(`failed to get lora device list ${err}`));
   }
 
   render() {

@@ -19,8 +19,8 @@ server:
     https:
       enabled: false
       listen: :8443
-      tls_cert: /path/to/tls_cert # required if enabled
-      tls_key: /path/to/tls_key   # required if enabled
+      tls_cert: /path/to/tls_cert.pem # required if enabled
+      tls_key: /path/to/tls_key.pem   # required if enabled
 
   # Authentication for service API
   auth:
@@ -65,7 +65,7 @@ service:
     # enable configure service or not
     enabled: true
     # shell used to execute helper_script
-    shell: bash
+    shell: sh
     # LoRaWAN configure service
     lora:
       # enable lora configure service or not
@@ -73,26 +73,26 @@ service:
       devs:
       - name: Gateway
         enabled: true
-        # device type [brocaar/lora-gateway-bridge, pkt_forward]
+        # device type [brocaar/lora-gateway-bridge, pkt_forwarder]
         type: brocaar/lora-gateway-bridge
         # path to lora gateway forward config file
-        conf_file: /path/to/lora/lora_gw.toml
+        conf_file: /path/to/lora_gw.toml
         # config file format [text, json, ucl, toml, yaml]
         conf_fmt: toml
         # helper script to provide device management
         # including [start, stop, restart, status]
-        helper_script: /path/to/helper-script
+        helper_script: /path/to/lora-gw-helper.sh
       - name: SX1301
         enabled: true
-        # device type [brocaar/lora-gateway-bridge, pkt_forward]
-        type: pkt_forward
+        # device type [brocaar/lora-gateway-bridge, pkt_forwarder]
+        type: pkt_forwarder
         # path to lora pkt forward config file
-        conf_file: /path/to/lora/global_conf.json
+        conf_file: /path/to/lora-pf.json
         # config file format [text, json, ucl, toml, yaml]
         conf_fmt: json
         # helper script to provide device management
         # including [start, stop, restart, status]
-        helper_script: /path/to/helper-script
+        helper_script: /path/to/lora-pf-helper.sh
     # network configure service
     network:
       # enable network configure service or not
@@ -105,10 +105,10 @@ service:
           # config file format [text, json, ucl, toml, yaml]
           conf_fmt: ucl
           # path to custom eth_0 config file
-          conf_file: /path/to/eth_0/config
+          conf_file: /path/to/net_ifcae.conf
           # helper script to provide device management
           # including [start, stop, restart, status]
-          helper_script: /path/to/helper-script
+          helper_script: /path/to/ifcae-helper.sh
       wifi:
         # enable wifi configure service or not
         enabled: true
@@ -116,12 +116,12 @@ service:
         - name: WLAN_0
           enabled: true
           # path to wpa_supplicant.conf
-          conf_file: /etc/wpa_supplicant.conf
+          conf_file: /path/to/net_wifi_wpa_supplicant.conf
           # config file format [text, json, ucl, toml, yaml]
           conf_fmt: ucl
           # helper script to provide device management
           # including [start, stop, restart, status]
-          helper_script: /path/to/helper-script
+          helper_script: /path/to/wifi-helper.sh
       cellular:
         # enable cellular configure service or not
         enabled: true
@@ -131,10 +131,10 @@ service:
           # config file format [text, json, ucl, toml, yaml]
           conf_fmt: text
           # path to custom cellular config file
-          conf_file: /path/to/cellular/config
+          conf_file: /path/to/net_cell.conf
           # helper script to provide device management
           # including [start, stop, restart, status]
-          helper_script: /path/to/helper-script
+          helper_script: /path/to/cell-helper.sh
     # bus configuration
     bus:
       # enable bus configure service or not
@@ -143,12 +143,12 @@ service:
       - name: rs485_0
         enabled: true
         # path to custom rs485 config file
-        conf_file: /path/to/rs485/config
+        conf_file: /path/to/bus_conf.conf
         # config file format [text, json, ucl, toml, yaml]
         conf_fmt: text
         # helper script to provide device management
         # including [start, stop, restart, status]
-        helper_script: /path/to/helper-script
+        helper_script: /path/to/bus-helper.sh
     # peripheral configuration
     periph:
       # enable bus configure service or not
@@ -157,9 +157,9 @@ service:
       - name: GPIO_0
         enabled: true
         # path to custom gpio config file
-        conf_file: /path/to/gpio/config
+        conf_file: /path/to/periph_conf.conf
         # config file format [text, json, ucl, toml, yaml]
         conf_fmt: text
         # helper script to provide device management
         # including [start, stop, restart, status]
-        helper_script: /path/to/helper-script
+        helper_script: /path/to/periph-helper.sh

@@ -1,43 +1,27 @@
 [backend]
   [backend.mqtt]
-    ack_topic_template = ""
+    ack_topic_template = "gateway/{{ .MAC }}/ack"
     ca_cert = ""
-    clean_session = false
+    clean_session = true
     client_id = ""
-    config_topic_template = ""
-    downlink_topic_template = ""
-    marshaler = "protobuf"
-    max_reconnect_interval = 0.0
-    password = ""
+    config_topic_template = "gateway/{{ .MAC }}/config"
+    downlink_topic_template = "gateway/{{ .MAC }}/tx"
+    password = "test"
     qos = 0.0
-    server = ""
-    stats_topic_template = ""
+    server = "tcp://139.196.84.229:1883"
+    stats_topic_template = "gateway/{{ .MAC }}/stats"
     tls_cert = ""
     tls_key = ""
-    uplink_topic_template = ""
-    username = ""
-    [backend.mqtt.auth]
-      type = "{{ .Backend.MQTT.Auth.Type }}"
-      [backend.mqtt.auth.generic]
-        ca_cert = ""
-        clean_session = false
-        client_id = ""
-        max_reconnect_interval = 0.0
-        password = "password"
-        qos = 1.0
-        server = "tcp://1.1.1.1:8080"
-        tls_cert = ""
-        tls_key = ""
-        username = "username"
+    uplink_topic_template = "gateway/{{ .MAC }}/rx"
+    username = "test"
 
 [general]
-  log_level = 0.0
-
-[metrics]
-  [metrics.prometheus]
-    bind = "0.0.0.0:9090"
-    endpoint_enabled = false
+  log_level = 5.0
 
 [packet_forwarder]
   skip_crc_check = false
-  udp_bind = ""
+  udp_bind = "127.0.0.1:1700"
+
+  [[packet_forwarder.configuration]]
+    base_file = "/opt/lorawan/global_conf.json"
+    mac = "0102030405060708"

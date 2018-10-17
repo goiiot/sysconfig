@@ -14,8 +14,8 @@ func TestWPASupplicant(t *testing.T) {
 	buf := &bytes.Buffer{}
 	data := &WPASupplicantConf{
 		CtrlInterface: "/test/path",
-		ApScan: 0,
-		SaeGroups: []int{1, 2, 3},
+		ApScan:        0,
+		SaeGroups:     []int{1, 2, 3},
 	}
 
 	if err = tplt.Execute(buf, data); err != nil {

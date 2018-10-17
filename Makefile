@@ -10,3 +10,7 @@ test: build
 
 ensure:
 	go mod verify
+
+github-action:
+	./x-build.sh
+	docker build -t sysconfig:github-action -f deploy.dockerfile .
