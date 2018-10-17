@@ -37,7 +37,6 @@
 4. [statik](https://github.com/rakyll/statik) for bundling web app
 5. [upx](https://github.com/upx/upx) for binary compression
 6. [nodejs](https://nodejs.org) for web app build
-7. [npm](https://www.npmjs.com/) for web app build
 
 __NOTE__: You can install all these dependencies by executing the script `x-install-deps.sh`
 

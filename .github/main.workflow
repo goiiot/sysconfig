@@ -1,0 +1,3 @@
+action "action demo" {
+  uses = "./"
+}
