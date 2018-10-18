@@ -2,5 +2,8 @@
 
 set -e
 
-# TODO
-go mod verify
+
+go mod download
+cd ui
+npm install
+cd ..

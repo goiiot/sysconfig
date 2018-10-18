@@ -40,13 +40,11 @@
 3. [gorealser](https://goreleaser.com) for build ease
 4. [statik](https://github.com/rakyll/statik) for bundling web app
 5. [upx](https://github.com/upx/upx) for binary compression
-6. [nodejs](https://nodejs.org) for web app build
-
-__NOTE__: You can install all these dependencies by executing the script `x-install-deps.sh`
+6. [nodejs and npm](https://nodejs.org) for web app build
 
 ### Steps
 
 1. `cd $THIS_PROJECT_DIR`
-2. `cd ui && npm install && cd ..`
+2. `./x-install-deps.sh`
 3. `./x-build.sh`
 4. Find output in `dist` directory
