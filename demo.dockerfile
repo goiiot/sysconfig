@@ -30,6 +30,7 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
+    && go install \
     \
     && cd ${BUILD_DIR} \
     && ./x-install-deps.sh \
@@ -54,5 +55,7 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && chmod -R +x /path/to/*.sh /app/sysconfig \
     \
     && rm -rf ${BUILD_DIR}
+
+EXPOSE 8080 8443
 
 CMD ["/app/sysconfig", "-c", "/path/to/config.yaml"]

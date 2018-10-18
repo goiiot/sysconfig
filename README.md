@@ -1,11 +1,14 @@
-# Config server
+# sysconfig
 
 [![demo container status](https://quay.io/repository/goiiot/sysconfig/status)](https://quay.io/repository/goiiot/sysconfig)
  [![GoReportCard](https://goreportcard.com/badge/goiiot/sysconfig)](https://goreportcard.com/report/github.com/goiiot/sysconfig)
 
+Configure your embedded system with ease
+
 ## Table of Contents
 
 - [Features](#features)
+- [Demo](#demo)
 - [Supported Platforms](#supported-platforms)
 - [Usage](#usage)
 - [Build](#build)
@@ -19,6 +22,14 @@
 - Device monitoring
 - Device configuration
 - Power management
+
+## Demo
+
+Try demo with docker
+
+```bash
+docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 sysconfig:demo
+```
 
 ## Supported Platforms
 
