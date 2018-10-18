@@ -28,7 +28,7 @@ done
 
 upx=$(which upx)
 
-for target in ${BIN_DIR_LIST[@]}
+for target in $BIN_DIR_LIST
 do
   b="$DIST_DIR/$target/$BIN_NAME"
   if [ -f $b ]; then
