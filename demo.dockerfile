@@ -28,10 +28,11 @@ RUN apk add --no-cache --virtual .build_deps \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
+    && cd - \
     \
-    && cd ${BUILD_DIR} \
     && go mod download \
-    && ${BUILD_DIR}/x-build.sh \
+    && cd ui && npm install && cd - \
+    && ./x-build.sh \
     && go clean -modcache -cache \
     \
     && rm -rf ${GOPATH} \
