@@ -19,8 +19,8 @@ COPY . ${BUILD_DIR}
 
 WORKDIR /
 
-RUN apk add --no-cache --virtual .build_deps \
-        upx git nodejs make musl-dev dep curl \
+RUN apk add --no-cache --update --virtual .build_deps \
+        upx git nodejs nodejs-npm make musl-dev dep curl \
     \
     && go get github.com/rakyll/statik \
     && go get -d github.com/goreleaser/goreleaser \

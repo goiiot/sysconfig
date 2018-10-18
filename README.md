@@ -1,5 +1,8 @@
 # Config server
 
+[![demo container status](https://quay.io/repository/goiiot/sysconfig/status)](https://quay.io/repository/goiiot/sysconfig)
+ [![GoReportCard](https://goreportcard.com/badge/goiiot/sysconfig)](https://goreportcard.com/report/github.com/goiiot/sysconfig)
+
 - [Config server](#config-server)
     - [Features](#features)
     - [Supported Platforms](#supported-platforms)
