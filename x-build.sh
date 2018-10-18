@@ -2,7 +2,7 @@
 
 set -e
 
-BIN_DEPS=(goreleaser statik upx)
+BIN_DEPS="goreleaser statik upx"
 
 for dep in ${BIN_DEPS[@]}
 do

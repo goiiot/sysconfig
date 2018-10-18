@@ -8,8 +8,8 @@ find . -name ".DS_Store" -delete
 find . -name "*.tar.*" -delete
 find . -name "*.zip" -delete
 
-MISC=(./dist ./ui/build ./sysconfig-test)
+MISC="./dist ./ui/build ./sysconfig-test"
 for toDel in ${MISC[@]}
 do
-    rm -rf $toDel
+  rm -rf $toDel
 done
