@@ -87,7 +87,7 @@ service:
         # device type [brocaar/lora-gateway-bridge, pkt_forwarder]
         type: pkt_forwarder
         # path to lora pkt forward config file
-        conf_file: /path/to/lora-pf.json
+        conf_file: /path/to/lora_pf.json
         # config file format [text, json, ucl, toml, yaml]
         conf_fmt: json
         # helper script to provide device management

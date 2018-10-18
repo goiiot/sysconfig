@@ -53,7 +53,7 @@ RUN apk add --no-cache --update --virtual .build_deps \
     \
     && chmod -R +x /path/to/*.sh /app/sysconfig \
     \
-    && rm -rf ${GOPATH} ${BUILD_DIR} \
+    && rm -rf ${GOPATH} ${BUILD_DIR} /root/.* \
     && cd / && apk del .build_deps
 
 EXPOSE 8080 8443
