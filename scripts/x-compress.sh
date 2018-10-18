@@ -18,11 +18,11 @@ GOOS_LIST="linux darwin"
 GOARCH_LIST="amd64 386 arm64 arm_7 arm_6 arm_5"
 BIN_DIR_LIST=""
 
-for OS in ${GOOS_LIST}
+for OS in $GOOS_LIST
 do
-  for ARCH in ${GOARCH_LIST}
+  for ARCH in $GOARCH_LIST
   do
-    BIN_DIR_LIST="${OS}_${ARCH} ${BIN_DIR_LIST}"
+    BIN_DIR_LIST="$OS"_"$ARCH $BIN_DIR_LIST"
   done
 done
 
