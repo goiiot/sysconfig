@@ -17,21 +17,20 @@ ENV CGO_ENABLED=0
 
 COPY . ${BUILD_DIR}
 
+WORKDIR /
+
 RUN apk add --no-cache --virtual .build_deps \
         upx git nodejs make musl-dev dep curl \
     \
-    && mkdir -p ${GOPATH} \
-    \
     && go get github.com/rakyll/statik \
-    \
     && go get -d github.com/goreleaser/goreleaser \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
-    && cd - \
     \
+    && cd ${BUILD_DIR} \
     && go mod download \
-    && cd ui && npm install && cd - \
+    && cd ui && npm install && cd .. \
     && ./x-build.sh \
     && go clean -modcache -cache \
     \
