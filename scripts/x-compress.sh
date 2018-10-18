@@ -8,8 +8,8 @@
 set -e
 
 if ! [ -x "$(command -v upx)" ]; then
-    echo "upx not found, not going to compress"
-    exit 0
+  echo "upx not found, not going to compress"
+  exit 0
 fi
 
 DIST_DIR="./dist"
@@ -20,18 +20,18 @@ BIN_DIR_LIST=()
 
 for os in ${GOOS_LIST[@]}
 do
-    for arch in ${GOARCH_LIST[@]}
-    do
-        BIN_DIR_LIST=("${BIN_DIR_LIST[@]}" "${os}_${arch}")
-    done
+  for arch in ${GOARCH_LIST[@]}
+  do
+      BIN_DIR_LIST=("${BIN_DIR_LIST[@]}" "${os}_${arch}")
+  done
 done
 
 upx=$(which upx)
 
 for target in ${BIN_DIR_LIST[@]}
 do
-    b="$DIST_DIR/$target/$BIN_NAME"
-    if [ -f $b ]; then
-        $upx --brute "$DIST_DIR/$target/$BIN_NAME"
-    fi
+  b="$DIST_DIR/$target/$BIN_NAME"
+  if [ -f $b ]; then
+    $upx --brute "$DIST_DIR/$target/$BIN_NAME"
+  fi
 done

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/sh
 
 set -e
 
@@ -6,10 +6,10 @@ BIN_DEPS=(goreleaser statik upx)
 
 for dep in ${BIN_DEPS[@]}
 do
-    if ! [ -x "$(command -v ${dep})" ]; then
-        echo "bin dependency $dep not found"
-        exit 1
-    fi
+  if ! [ -x "$(command -v ${dep})" ]; then
+    echo "bin dependency $dep not found"
+    exit 1
+  fi
 done
 
 GOHOSTOS=$(go env GOHOSTOS) \
