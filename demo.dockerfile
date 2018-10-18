@@ -1,5 +1,14 @@
 FROM golang:alpine
 
+LABEL "com.github.actions.name"="goiiot/sysconfig"
+LABEL "com.github.actions.description"="Sysconfig demo app"
+LABEL "com.github.actions.icon"="mic"
+LABEL "com.github.actions.color"="purple"
+
+LABEL "repository"="http://github.com/goiiot/sysconfig"
+LABEL "homepage"="http://github.com/goiiot/sysconfig"
+LABEL "maintainer"="JeffreyStoke <jeffctor@gmail.com>"
+
 # build app
 COPY . /build
 
@@ -8,18 +17,15 @@ COPY . /build
 ENV GOPATH=/gopath
 ENV CGO_ENABLED=0
 
-RUN \
-    apk add --no-cache --virtual .build_deps \
+RUN apk add --no-cache --virtual .build_deps \
      upx git nodejs make musl-dev \
     && mkdir -p ${GOPATH} \
     \
     && go get github.com/rakyll/statik \
-    \
     && go get -d github.com/goreleaser/goreleaser \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
-    && cd - \
     \
     && cd /build \
     && go mod download \
