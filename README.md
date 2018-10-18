@@ -3,21 +3,22 @@
 [![demo container status](https://quay.io/repository/goiiot/sysconfig/status)](https://quay.io/repository/goiiot/sysconfig)
  [![GoReportCard](https://goreportcard.com/badge/goiiot/sysconfig)](https://goreportcard.com/report/github.com/goiiot/sysconfig)
 
-- [Config server](#config-server)
-    - [Features](#features)
-    - [Supported Platforms](#supported-platforms)
-    - [Usage](#usage)
-    - [Build](#build)
-        - [Prerequisite](#prerequisite)
-        - [Steps](#steps)
+## Table of Contents
+
+- [Features](#features)
+- [Supported Platforms](#supported-platforms)
+- [Usage](#usage)
+- [Build](#build)
+    - [Prerequisite](#prerequisite)
+    - [Steps](#steps)
 
 ## Features
 
 - Shell execution (via `xterm` and `websocket`)
 - File upload and download
 - Device monitoring
-- TODO Configuration
-- TODO Power management
+- Device configuration
+- Power management
 
 ## Supported Platforms
 
@@ -46,5 +47,6 @@ __NOTE__: You can install all these dependencies by executing the script `x-inst
 ### Steps
 
 1. `cd $THIS_PROJECT_DIR`
-2. `./x-build.sh`
-3. Find output in `dist` directory
+2. `cd ui && npm install && cd ..`
+3. `./x-build.sh`
+4. Find output in `dist` directory

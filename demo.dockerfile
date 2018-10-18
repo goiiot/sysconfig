@@ -31,6 +31,7 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && cd ${BUILD_DIR} \
     && go mod download \
     && cd ui && npm install && cd .. \
+    && chmod +x ./*.sh ./scripts/*.sh \
     && ./x-build.sh \
     && go clean -modcache -cache \
     \
