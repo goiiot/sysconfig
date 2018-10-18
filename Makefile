@@ -9,8 +9,8 @@ test: build
 	./${BIN} -c ./config.yaml
 
 ensure:
+	go mod download
 	go mod verify
 
-github-action:
-	./x-build.sh
-	docker build -t sysconfig:github-action -f deploy.dockerfile .
+demo-image:
+	docker build -t sysconfig:demo -f demo.dockerfile .

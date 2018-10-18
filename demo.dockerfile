@@ -9,16 +9,16 @@ LABEL "repository"="http://github.com/goiiot/sysconfig"
 LABEL "homepage"="http://github.com/goiiot/sysconfig"
 LABEL "maintainer"="JeffreyStoke <jeffctor@gmail.com>"
 
-# build app
-COPY . /build
-
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
 ENV GOPATH=/gopath
+ENV BUILD_DIR=/build
 ENV CGO_ENABLED=0
 
+COPY . ${BUILD_DIR}
+
 RUN apk add --no-cache --virtual .build_deps \
-     upx git nodejs make musl-dev dep \
+     upx git nodejs make musl-dev dep curl \
     && mkdir -p ${GOPATH} \
     \
     && go get github.com/rakyll/statik \
