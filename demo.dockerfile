@@ -36,14 +36,13 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && ./x-install-deps.sh \
     && ./x-build.sh \
     \
-    && rm -rf ${GOPATH} \
-    && apk del .build_deps \
-    \
     && mkdir -p /app /path/to \
+    \
     && mv dist/linux_amd64/sysconfig /app/sysconfig \
     && mv config.example.yaml /path/to/config.yaml \
-    && mv testdata/tls_cert.pem testdata/tls_cert.pem /path/to/ \
+    && mv testdata/tls_cert.pem testdata/tls_key.pem /path/to/ \
     && mv testdata/test_conf/* /path/to/ \
+    \
     && mv scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh \
     && mv scripts/templates/t-cell-helper.sh /path/to/cell-helper.sh \
     && mv scripts/templates/t-iface-helper.sh /path/to/iface-helper.sh \
@@ -51,9 +50,11 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && mv scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh \
     && mv scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh \
     && mv scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh \
+    \
     && chmod -R +x /path/to/*.sh /app/sysconfig \
     \
-    && rm -rf ${BUILD_DIR}
+    && rm -rf ${GOPATH} ${BUILD_DIR} \
+    && cd / && apk del .build_deps
 
 EXPOSE 8080 8443
 
