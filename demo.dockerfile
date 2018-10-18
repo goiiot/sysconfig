@@ -14,6 +14,7 @@ LABEL "maintainer"="JeffreyStoke <jeffctor@gmail.com>"
 ENV GOPATH=/gopath
 ENV BUILD_DIR=/build
 ENV CGO_ENABLED=0
+ENV PATH=${PATH}:${GOPATH}/bin
 
 COPY . ${BUILD_DIR}
 
@@ -22,13 +23,14 @@ WORKDIR /
 RUN apk add --no-cache --update --virtual .build_deps \
         upx git nodejs nodejs-npm make musl-dev dep curl \
     \
+    && mkdir -p ${GOPATH} \
+    \
     && go get github.com/rakyll/statik \
     && go get -d github.com/goreleaser/goreleaser \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
     \
-    && export PATH=$PATH:${GOPATH}/bin \
     && cd ${BUILD_DIR} \
     && ./x-install-deps.sh \
     && ./x-build.sh \
