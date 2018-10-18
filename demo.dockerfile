@@ -18,7 +18,7 @@ ENV GOPATH=/gopath
 ENV CGO_ENABLED=0
 
 RUN apk add --no-cache --virtual .build_deps \
-     upx git nodejs make musl-dev \
+     upx git nodejs make musl-dev dep \
     && mkdir -p ${GOPATH} \
     \
     && go get github.com/rakyll/statik \
