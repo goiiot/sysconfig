@@ -35,7 +35,6 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && cd ${BUILD_DIR} \
     && ./x-install-deps.sh \
     && ./x-build.sh \
-    && go clean -modcache -cache \
     \
     && rm -rf ${GOPATH} \
     && apk del .build_deps \

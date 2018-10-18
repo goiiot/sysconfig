@@ -32,6 +32,6 @@ for target in $BIN_DIR_LIST
 do
   b="$DIST_DIR/$target/$BIN_NAME"
   if [ -f $b ]; then
-    $upx --brute "$DIST_DIR/$target/$BIN_NAME"
+    $upx "$DIST_DIR/$target/$BIN_NAME"
   fi
 done
