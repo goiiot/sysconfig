@@ -25,10 +25,18 @@ Configure your embedded system with ease
 
 ## Demo
 
-Try demo with docker
+Try sysconfig demo with docker
 
 ```bash
-docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 quay.io/goiiot/sysconfig:latest
+$ docker run -d \
+    --name sysconfig-demo \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    goiiot/sysconfig:demo
+
+# or use image at quay.io
+#
+# $ docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 quay.io/goiiot/sysconfig:latest
 ```
 
 ## Supported Platforms
@@ -59,3 +67,21 @@ docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 quay.io/goiiot/sys
 2. `./x-install-deps.sh`
 3. `./x-build.sh`
 4. Find output in `dist` directory
+
+## LICENSE
+
+```text
+Copyright Go-IIoT (https://github.com/goiiot)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
