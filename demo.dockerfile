@@ -18,18 +18,20 @@ ENV CGO_ENABLED=0
 COPY . ${BUILD_DIR}
 
 RUN apk add --no-cache --virtual .build_deps \
-     upx git nodejs make musl-dev dep curl \
+        upx git nodejs make musl-dev dep curl \
+    \
     && mkdir -p ${GOPATH} \
     \
     && go get github.com/rakyll/statik \
+    \
     && go get -d github.com/goreleaser/goreleaser \
     && cd ${GOPATH}/src/github.com/goreleaser/goreleaser \
     && dep ensure -vendor-only \
     && make setup build \
     \
-    && cd /build \
+    && cd ${BUILD_DIR} \
     && go mod download \
-    && ./x-build.sh \
+    && ${BUILD_DIR}/x-build.sh \
     && go clean -modcache -cache \
     \
     && rm -rf ${GOPATH} \
@@ -47,6 +49,8 @@ RUN apk add --no-cache --virtual .build_deps \
     && mv scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh \
     && mv scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh \
     && mv scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh \
-    && chmod -R +x /path/to/*.sh /app/sysconfig
+    && chmod -R +x /path/to/*.sh /app/sysconfig \
+    \
+    && rm -rf ${BUILD_DIR}
 
 CMD ["/app/sysconfig", "-c", "/path/to/config.yaml"]
