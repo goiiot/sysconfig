@@ -9,7 +9,7 @@ set -e
 
 if ! [ -x "$(command -v upx)" ]; then
   echo "upx not found, not going to compress"
-  exit 0
+  exit 1
 fi
 
 DIST_DIR="./dist"
@@ -18,11 +18,11 @@ GOOS_LIST="linux darwin"
 GOARCH_LIST="amd64 386 arm64 arm_7 arm_6 arm_5"
 BIN_DIR_LIST=""
 
-for os in ${GOOS_LIST[@]}
+for OS in ${GOOS_LIST}
 do
-  for arch in ${GOARCH_LIST[@]}
+  for ARCH in ${GOARCH_LIST}
   do
-    BIN_DIR_LIST="${BIN_DIR_LIST[@]} ${os}_${arch}"
+    BIN_DIR_LIST="${OS}_${ARCH} ${BIN_DIR_LIST}"
   done
 done
 
