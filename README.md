@@ -28,7 +28,7 @@ Configure your embedded system with ease
 Try demo with docker
 
 ```bash
-docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 sysconfig:demo
+docker run -d --name sysconfig-demo -p 8080:8080 -p 8443:8443 quay.io/goiiot/sysconfig:demo
 ```
 
 ## Supported Platforms
