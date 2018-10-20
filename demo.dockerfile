@@ -40,8 +40,6 @@ RUN apk add --no-cache --update --virtual .build_deps \
 # build actual image
 FROM scratch
 
-RUN mkdir -p /app /path/to
-
 COPY --from=build dist/linux_amd64/sysconfig /app/sysconfig
 
 COPY --from=build config.example.yaml /path/to/config.yaml
@@ -55,8 +53,6 @@ COPY --from=build scripts/templates/t-lora-gw-helper.sh /path/to/lora-gw-helper.
 COPY --from=build scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh
 COPY --from=build scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh
 COPY --from=build scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh
-
-RUN chmod -R +x /path/to/*.sh /app/sysconfig
 
 EXPOSE 8080 8443
 
