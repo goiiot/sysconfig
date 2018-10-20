@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:alpine AS build
 
 LABEL "com.github.actions.name"="goiiot/sysconfig"
 LABEL "com.github.actions.description"="Sysconfig demo app"
@@ -11,6 +11,7 @@ LABEL "maintainer"="JeffreyStoke <jeffctor@gmail.com>"
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
+# build project
 ENV GOPATH=/gopath
 ENV BUILD_DIR=/build
 ENV CGO_ENABLED=0
@@ -34,27 +35,28 @@ RUN apk add --no-cache --update --virtual .build_deps \
     \
     && cd ${BUILD_DIR} \
     && ./x-install-deps.sh \
-    && ./x-build.sh \
-    \
-    && mkdir -p /app /path/to \
-    \
-    && mv dist/linux_amd64/sysconfig /app/sysconfig \
-    && mv config.example.yaml /path/to/config.yaml \
-    && mv testdata/tls_cert.pem testdata/tls_key.pem /path/to/ \
-    && mv testdata/test_conf/* /path/to/ \
-    \
-    && mv scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh \
-    && mv scripts/templates/t-cell-helper.sh /path/to/cell-helper.sh \
-    && mv scripts/templates/t-iface-helper.sh /path/to/iface-helper.sh \
-    && mv scripts/templates/t-lora-gw-helper.sh /path/to/lora-gw-helper.sh \
-    && mv scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh \
-    && mv scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh \
-    && mv scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh \
-    \
-    && chmod -R +x /path/to/*.sh /app/sysconfig \
-    \
-    && rm -rf ${GOPATH} ${BUILD_DIR} /root/.cache /root/.npm /root/.config \
-    && cd / && apk del .build_deps
+    && ./x-build.sh
+
+# build actual image
+FROM scratch
+
+RUN mkdir -p /app /path/to
+
+COPY --from=build dist/linux_amd64/sysconfig /app/sysconfig
+
+COPY config.example.yaml /path/to/config.yaml
+COPY testdata/tls_cert.pem testdata/tls_key.pem /path/to/
+COPY testdata/test_conf/* /path/to/
+
+COPY scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh
+COPY scripts/templates/t-cell-helper.sh /path/to/cell-helper.sh
+COPY scripts/templates/t-iface-helper.sh /path/to/iface-helper.sh
+COPY scripts/templates/t-lora-gw-helper.sh /path/to/lora-gw-helper.sh
+COPY scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh
+COPY scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh
+COPY scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh
+
+RUN chmod -R +x /path/to/*.sh /app/sysconfig
 
 EXPOSE 8080 8443
 
