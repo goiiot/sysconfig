@@ -38,7 +38,7 @@ RUN apk add --no-cache --update --virtual .build_deps \
     && ./x-build.sh
 
 # build actual image
-FROM scratch
+FROM alpine:latest
 
 COPY --from=build /build/dist/linux_amd64/sysconfig /app/sysconfig
 
