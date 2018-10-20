@@ -43,7 +43,7 @@ FROM scratch
 COPY --from=build /build/dist/linux_amd64/sysconfig /app/sysconfig
 
 COPY --from=build /build/config.example.yaml /path/to/config.yaml
-COPY --from=build /build/testdata/tls_cert.pem testdata/tls_key.pem /path/to/
+COPY --from=build /build/testdata/tls_cert.pem /build/testdata/tls_key.pem /path/to/
 COPY --from=build /build/testdata/test_conf/* /path/to/
 
 COPY --from=build /build/scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh
