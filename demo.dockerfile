@@ -40,19 +40,19 @@ RUN apk add --no-cache --update --virtual .build_deps \
 # build actual image
 FROM scratch
 
-COPY --from=build dist/linux_amd64/sysconfig /app/sysconfig
+COPY --from=build /build/dist/linux_amd64/sysconfig /app/sysconfig
 
-COPY --from=build config.example.yaml /path/to/config.yaml
-COPY --from=build testdata/tls_cert.pem testdata/tls_key.pem /path/to/
-COPY --from=build testdata/test_conf/* /path/to/
+COPY --from=build /build/config.example.yaml /path/to/config.yaml
+COPY --from=build /build/testdata/tls_cert.pem testdata/tls_key.pem /path/to/
+COPY --from=build /build/testdata/test_conf/* /path/to/
 
-COPY --from=build scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh
-COPY --from=build scripts/templates/t-cell-helper.sh /path/to/cell-helper.sh
-COPY --from=build scripts/templates/t-iface-helper.sh /path/to/iface-helper.sh
-COPY --from=build scripts/templates/t-lora-gw-helper.sh /path/to/lora-gw-helper.sh
-COPY --from=build scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh
-COPY --from=build scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh
-COPY --from=build scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh
+COPY --from=build /build/scripts/templates/t-bus-helper.sh /path/to/bus-helper.sh
+COPY --from=build /build/scripts/templates/t-cell-helper.sh /path/to/cell-helper.sh
+COPY --from=build /build/scripts/templates/t-iface-helper.sh /path/to/iface-helper.sh
+COPY --from=build /build/scripts/templates/t-lora-gw-helper.sh /path/to/lora-gw-helper.sh
+COPY --from=build /build/scripts/templates/t-lora-pf-helper.sh /path/to/lora-pf-helper.sh
+COPY --from=build /build/scripts/templates/t-periph-helper.sh /path/to/periph-helper.sh
+COPY --from=build /build/scripts/templates/t-wifi-helper.sh /path/to/wifi-helper.sh
 
 EXPOSE 8080 8443
 
